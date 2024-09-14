@@ -1,0 +1,7 @@
+validators 
+streamlit
+langchain
+langchainhub
+langchain_community
+langchain_core
+langchain_openai
