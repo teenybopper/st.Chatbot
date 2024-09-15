@@ -7,7 +7,10 @@ from datetime import datetime
 from langchain_openai import OpenAIEmbeddings  # Replace with actual import
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
-from langchain_chroma import Chroma  # Replace with actual import or implementationfrom langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_chroma import Chroma
+
+from langchain.chains import ConversationalRetrievalChain
+
 
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from utils import enable_chat_history,  sync_st_session, display_msg  # Ensure utils are set up correctly
@@ -16,6 +19,7 @@ import validators
 from langchain.chains import conversational_retrieval
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.memory import ConversationBufferMemory
+from langchain.schema import Document
 
 
 
@@ -45,7 +49,8 @@ class ChatbotWeb:
         docs = []
         for url in websites:
             content = _self.scrape_website(url)
-            docs.append({"page_content":content, "metadata":{"source":url}})
+            doc = Document(page_content=content, metadata={"source": url})
+            docs.append(doc)
         
         text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 200)
         splits = text_splitter.split_documents(docs)
@@ -59,10 +64,9 @@ class ChatbotWeb:
     
     
     
-    def chain(self, vector_store):
-        
+    def chain(self, user_query, vector_store):
         retriever = vector_store.as_retriever()
-        
+
         memory = ConversationBufferMemory(
             memory_key='chat_history',
             output_key='answer',
@@ -70,29 +74,34 @@ class ChatbotWeb:
         )
 
         prompt = ChatPromptTemplate.from_template("""
-                                          Answer the following questions based only on the provided context.
-                                          think step by step before before providing a detailed answer.
-                                          <context>
-                                          {context}
-                                          </context>
-                                          Question: {input}
-                                          """)
-        
-        
-        
+            Answer the following questions based only on the provided context.
+            Think step by step before providing a detailed answer.
+            <context>
+            {context}
+            </context>
+            Question: {input}
+        """)
+
         document_chain = create_stuff_documents_chain(self.llm, prompt)
-        
 
         
+        qa_chain = ConversationalRetrievalChain.from_llm(
+            llm=self.llm,
+            retriever=retriever,
+            memory=memory,
+            return_source_documents=True,
+            verbose=False)
+         
 
-        retrieveal_chain = conversational_retrieval(
-            llm = self.llm,
-            retriever = retriever,
-            memory = memory
-        )
         
-        return retrieveal_chain
+        response = qa_chain({"question":user_query})
+
         
+        answer = response.get("answer")
+        docs = response.get("source_documents", [])
+
+        return answer, docs
+
         
         
     
@@ -132,7 +141,7 @@ class ChatbotWeb:
 
             user_query = st.chat_input(placeholder="Ask me anything!")
             if user_query:
-                response, docs = self.setup_qa_chain(user_query, vector_store)
+                response, docs = self.chain(user_query, vector_store)
 
                
                 display_msg(user_query, 'user')
@@ -140,10 +149,10 @@ class ChatbotWeb:
 
                 
                 for idx, doc in enumerate(docs, 1):
-                    url = os.path.basename(doc["metadata"]['source'])
+                    url = os.path.basename(doc.metadata['source'])
                     ref_title = f":blue[Reference {idx}: *{url}*]"
                     with st.expander(ref_title):
-                        st.caption(doc["page_content"])  
+                        st.caption(doc.page_content)  
 
 if __name__ == "__main__":
     chatbot = ChatbotWeb()
