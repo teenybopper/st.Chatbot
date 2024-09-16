@@ -13,7 +13,7 @@ from langchain.chains import ConversationalRetrievalChain
 
 
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from utils import enable_chat_history,  sync_st_session, display_msg  # Ensure utils are set up correctly
+from utils import enable_chat_history,  sync_st_session, display_msg , choose_custom_openai_key
 import validators
 
 from langchain.chains import conversational_retrieval
@@ -27,7 +27,7 @@ class ChatbotWeb:
     def __init__(self):
         sync_st_session()
         self.embedding_model = OpenAIEmbeddings(api_key=st.secrets["OPENAI_API_KEY"])
-        self.llm = llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.2)
+        self.llm = llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
 
     def scrape_website(self, url):
         """Scrape the content of a given URL."""
