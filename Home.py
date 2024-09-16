@@ -7,7 +7,7 @@ from datetime import datetime
 from langchain_openai import OpenAIEmbeddings  # Replace with actual import
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
-from langchain_chroma import Chroma
+from langchain.vectorstores import Chroma
 
 from langchain.chains import ConversationalRetrievalChain
 

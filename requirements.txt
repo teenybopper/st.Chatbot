@@ -5,3 +5,4 @@ langchainhub
 langchain_community
 langchain_core
 langchain_openai
+langchain_chroma
