@@ -7,3 +7,4 @@ langchain_core
 langchain_openai
 langchain_chroma
 protobuf==3.20.3
+pysqlite3-binary
