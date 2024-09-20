@@ -7,7 +7,7 @@ from datetime import datetime
 from langchain_openai import OpenAIEmbeddings  # Replace with actual import
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import FAISS
 
 from langchain.chains import ConversationalRetrievalChain
 
@@ -55,7 +55,7 @@ class ChatbotWeb:
         text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 200)
         splits = text_splitter.split_documents(docs)
 
-        vector_store = Chroma.from_documents(documents = splits, embedding = OpenAIEmbeddings())   
+        vector_store = FAISS.from_documents(documents = splits, embedding = OpenAIEmbeddings())   
         return vector_store 
     
     def format_docs(docs):
