@@ -48,20 +48,15 @@ PlugTalk is a web-based chatbot built using **LangChain**, **Streamlit**, and **
 To install and run PlugTalk locally, follow these steps:
 
 1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/PlugTalk.git
-   cd PlugTalk
+   ```git clone https://github.com/your-username/PlugTalk.git
+        cd PlugTalk
 
 2. **Set up a virtual environment**:
-
-
     ```python3 -m venv venv
     source venv/bin/activate  # For Windows: venv\Scripts\activate
 
 
 3. **Install the required dependencies**:
-
-
     ```pip install -r requirements.txt
 
 4. **Set up OpenAI API Key**:
@@ -69,26 +64,24 @@ To install and run PlugTalk locally, follow these steps:
     Get your OpenAI API key from the OpenAI platform.
     You can either set it up via environment variables or directly input it through the Streamlit sidebar.
 5. **Run the application**:
-
-
     ```streamlit run Home.py
 
 
 ## 🧑‍💻 Usage
 
 1. Starting the Chatbot
-    ```Run the Streamlit app using the command above.
-        The app will launch in your web browser.
+    Run the Streamlit app using the command above.
+    The app will launch in your web browser.
 2. Add Website URLs
-    ```Enter the website URLs you want the chatbot to scrape and analyze.
-        Click on the ":heavy_plus_sign: Add Website" button to add the URLs.
+    Enter the website URLs you want the chatbot to scrape and analyze.
+    Click on the ":heavy_plus_sign: Add Website" button to add the URLs.
 3. Input Custom OpenAI API Key
-    ```Use the sidebar to input your custom OpenAI API key and choose a model from the dropdown.
+    Use the sidebar to input your custom OpenAI API key and choose a model from the dropdown.
 4. Ask Questions
-    ```Start asking questions in the chat input box.
-        The chatbot will retrieve the most relevant information from the scraped websites and generate responses.
+    Start asking questions in the chat input box.
+    The chatbot will retrieve the most relevant information from the scraped websites and generate responses.
 5. Clear Website Data
-    ```Use the "Clear" button in the sidebar to reset the website list.
+    Use the "Clear" button in the sidebar to reset the website list.
 
 
 ## ⚙️ Configuration
