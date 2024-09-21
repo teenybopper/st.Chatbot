@@ -48,15 +48,18 @@ PlugTalk is a web-based chatbot built using **LangChain**, **Streamlit**, and **
 To install and run PlugTalk locally, follow these steps:
 
 1. **Clone the repository**:
-   ```git clone https://github.com/your-username/PlugTalk.git
+    
+    ```git clone https://github.com/your-username/PlugTalk.git
         cd PlugTalk
 
 2. **Set up a virtual environment**:
+    
     ```python3 -m venv venv
     source venv/bin/activate  # For Windows: venv\Scripts\activate
 
 
 3. **Install the required dependencies**:
+    
     ```pip install -r requirements.txt
 
 4. **Set up OpenAI API Key**:
@@ -64,6 +67,7 @@ To install and run PlugTalk locally, follow these steps:
     Get your OpenAI API key from the OpenAI platform.
     You can either set it up via environment variables or directly input it through the Streamlit sidebar.
 5. **Run the application**:
+    
     ```streamlit run Home.py
 
 
