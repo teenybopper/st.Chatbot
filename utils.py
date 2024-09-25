@@ -36,59 +36,10 @@ def enable_chat_history(func):
     return execute
 
 def display_msg(msg, author):
-    """Method to display message on the UI
-
-    Args:
-        msg (str): message to display
-        author (str): author of the message -user/assistant
-    """
+    
     st.session_state.messages.append({"role": author, "content": msg})
     st.chat_message(author).write(msg)
 
-def choose_custom_openai_key():
-    openai_api_key = st.sidebar.text_input(
-        label="OpenAI API Key",
-        type="password",
-        placeholder="sk-...",
-        key="SELECTED_OPENAI_API_KEY"
-        )
-    if not openai_api_key:
-        st.error("Please add your OpenAI API key to continue.")
-        st.info("Obtain your key from this link: https://platform.openai.com/account/api-keys")
-        st.stop()
-
-    model = "gpt-4o-mini"
-    try:
-        client = openai.OpenAI(api_key=openai_api_key)
-        available_models = [{"id": i.id, "created":datetime.fromtimestamp(i.created)} for i in client.models.list() if str(i.id).startswith("gpt")]
-        available_models = sorted(available_models, key=lambda x: x["created"])
-        available_models = [i["id"] for i in available_models]
-
-        model = st.sidebar.selectbox(
-            label="Model",
-            options=available_models,
-            key="SELECTED_OPENAI_MODEL"
-        )
-    except openai.AuthenticationError as e:
-        st.error(e.body["message"])
-        st.stop()
-    except Exception as e:
-        print(e)
-        st.error("Something went wrong. Please try again later.")
-        st.stop()
-    return model, openai_api_key
-
-def configure_llm():
-    available_llms = ["gpt-4o-mini","llama3.1:8b","use your openai api key"]
-    
-    
-    model, openai_api_key = choose_custom_openai_key()
-    llm = ChatOpenAI(model_name=model, temperature=0, streaming=True, api_key=openai_api_key)
-    return llm
-
-def print_qa(cls, question, answer):
-    log_str = "\nUsecase: {}\nQuestion: {}\nAnswer: {}\n" + "------"*10
-    logger.info(log_str.format(cls.__name__, question, answer))
 
 @st.cache_resource
 def configure_embedding_model():
