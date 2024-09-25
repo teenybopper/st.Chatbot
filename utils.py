@@ -1,19 +1,19 @@
 import os
 import openai
 import streamlit as st
-from datetime import datetime
+
 from streamlit.logger import get_logger
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.chat_models import ChatOllama
-from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
+
 
 logger = get_logger('Langchain-Chatbot')
 
-#decorator
+
 def enable_chat_history(func):
     if os.environ.get("OPENAI_API_KEY"):
 
-        # to clear chat history after swtching chatbot
+        
         current_page = func.__qualname__
         if "current_page" not in st.session_state:
             st.session_state["current_page"] = current_page
@@ -25,7 +25,7 @@ def enable_chat_history(func):
             except:
                 pass
 
-        # to show chat history on ui
+        
         if "messages" not in st.session_state:
             st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
         for msg in st.session_state["messages"]:
